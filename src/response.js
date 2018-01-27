@@ -90,7 +90,4 @@ function readFile(fileName) {
     }
 }
 
-var A = new SentimentResponse([1,1]);
-console.log(A.response);
-
 module.exports = SentimentResponse;
