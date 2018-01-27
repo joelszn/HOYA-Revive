@@ -31,7 +31,7 @@ function handleSentiment(numArray) {
  * @returns {string}
  */
 function handleHappy() {
-    return("I'm glad that you seem happy!");
+    return{text: "I'm glad that you seem happy!"};
     // TODO: ask user what they have been doing that day and store activities
 }
 
@@ -89,5 +89,8 @@ function readFile(fileName) {
         console.log('Error:', e.stack);
     }
 }
+
+var A = new SentimentResponse([1,1]);
+console.log(A.response);
 
 module.exports = SentimentResponse;
