@@ -1,9 +1,20 @@
 
-var physicalActivities = ["Going for a jog", "Going on a bike ride", "Going for a hike", "Going for a swim"];
-var emotionalActivities = ["Writing a journal entry", "Trying some deep breathing exercises", "Taking a relaxing bath"];
-var socialActivities = ["Calling a friend to chat", "Grabbing a meal with a friend", "Inviting a friend over"];
+var physicalFile = "data/physical.txt";
+var emotionalFile = "data/emotional.txt";
+var socialFile = "data/social.txt";
 
-var Activities = [physicalActivities, emotionalActivities, socialActivities];
+var Files = [physicalFile, emotionalFile, socialFile];
+
+var Activities = [];
+
+/**
+ * reads in and sets up the suggestion arrays by reading in the files provided
+ */
+function setUp() {
+    for (var i = 0; i < Files.length; i++) {
+        Activities.push(readFile(Files[i]));
+    }
+}
 
 /**
  * Handles a given array containing a sentiment score and magnitude, choosing
@@ -39,17 +50,33 @@ function handleMixed() {
  * @returns {string}
  */
 function handleHappy() {
-    // TODO: ask user what they have been doing that day and store activities
     console.log("I'm glad that you seem happy!");
-
+    // TODO: ask user what they have been doing that day and store activities
 }
 
+/**
+ * Suggests one activity per type of activity
+ */
 function showActivities() {
+    // TODO: Change category of suggestions based on user history
     for (var i = 0 ; i < Activities.length; i++){
         console.log(Activities[i][Math.floor(Math.random() * Activities[i].length)]);
     }
 }
 
-// TODO: Add file reader and read in options for activities to provide a wider variety
+/**
+ * Given a file path, reads in the file and returns an array where each line of the text file is an array entry
+ * @param fileName is the path of the desired file
+ * @returns {string[]} is the list suggestions of the current suggestion type
+ */
+function readFile(fileName) {
+    var fs = require('fs');
 
-handleSentiment([1,-1]);
+    try {
+        var data = fs.readFileSync(fileName, 'utf8');
+        var array = data.toString().split("\n");
+        return array;
+    } catch(e) {
+        console.log('Error:', e.stack);
+    }
+}
