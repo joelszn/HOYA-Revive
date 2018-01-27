@@ -1,0 +1,31 @@
+{
+  "name": "revive",
+  "version": "1.0.0",
+  "description": "Revive app",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo 'all tests passed'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcohen30/Revive.git"
+  },
+  "keywords": [
+    "revive",
+    "depression",
+    "app"
+  ],
+  "author": "Maz, Collin, Joel, Julia",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mcohen30/Revive/issues"
+  },
+  "homepage": "https://github.com/mcohen30/Revive#readme",
+  "dependencies": {
+    "@google-cloud/language": "^1.1.0",
+    "express": "^4.16.2"
+  }
+}
