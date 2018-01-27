@@ -1,5 +1,6 @@
 
 var fs = require('fs');
+var us = require('./user');
 
 var physicalFile = "data/physical.txt";
 var emotionalFile = "data/emotional.txt";
@@ -22,7 +23,7 @@ class SentimentResponse {
 
     /**
      * Handles a given array containing a sentiment score and magnitude, choosing
-     * @param numArray where the 0th element is the magnitude and the 1st element is the score
+     * @param numArray {{score, tone_id, tone_name},{score, tone_id, tone_name},....} OR {magnitude, score}
      */
     handleSentiment(numArray) {
         var magnitude = numArray[0];
@@ -33,12 +34,12 @@ class SentimentResponse {
 
     /**
      * Handles the case where the user is happy and returns encouraging text
-     * @returns {{sad: boolean, text: string}}
      */
     handleHappy() {
         this.isSad = false;
         this.text = "I'm glad that you seem happy!";
         this.suggestions = null;
+
         // TODO: ask user what they have been doing that day and store activities
     }
 
@@ -51,7 +52,6 @@ class SentimentResponse {
 
     /**
     * returns a sympathetic message and a list of three possible activities that would improve mood
-    * @returns {{sad: boolean, text: string, activities: *}}
     */
     handleSad() {
         this.isSad = true;
