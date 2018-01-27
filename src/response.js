@@ -3,16 +3,15 @@ var physicalFile = "data/physical.txt";
 var emotionalFile = "data/emotional.txt";
 var socialFile = "data/social.txt";
 
-var Files = [physicalFile, emotionalFile, socialFile];
+Files = [physicalFile, emotionalFile, socialFile];
 
-var Activities = [];
+Activities = [];
 
-/**
- * reads in and sets up the suggestion arrays by reading in the files provided
- */
-function setUp() {
-    for (var i = 0; i < Files.length; i++) {
-        Activities.push(readFile(Files[i]));
+class SentimentResponse {
+
+    constructor(analysis) {
+        setUp();
+        this.response = handleSentiment(analysis);
     }
 }
 
@@ -21,20 +20,37 @@ function setUp() {
  * @param numArray where the 0th element is the magnitude and the 1st element is the score
  */
 function handleSentiment(numArray) {
-    var magnitude = numArray[0];
-    var score = numArray[1];
-    if (score < -.6 && magnitude >= .05) handleSad();
-    else if (score > .8 && magnitude >= .05) handleHappy();
-    else handleMixed();
+    magnitude = numArray[0];
+    score = numArray[1];
+    if (score < -.5 && magnitude >= 1) return handleSad();
+    else return handleHappy();
+}
+
+/**
+ * Outputs an encouraging message
+ * @returns {string}
+ */
+function handleHappy() {
+    return("I'm glad that you seem happy!");
+    // TODO: ask user what they have been doing that day and store activities
 }
 
 /**
  * Outputs a sympathetic message and suggests possible activities to feel better
  */
 function handleSad() {
-    console.log("I'm sorry that you aren't feeling so great.");
-    console.log("Maybe try: ")
-    showActivities();
+    responseArray = showActivities();
+    return {text: "I'm sorry that you aren't feeling so great. Maybe try:",
+        activities: responseArray};
+}
+
+/**
+ * reads in and sets up the suggestion arrays by reading in the files provided
+ */
+function setUp() {
+    for (i = 0; i < Files.length; i++) {
+        Activities.push(readFile(Files[i]));
+    }
 }
 
 /**
@@ -46,22 +62,15 @@ function handleMixed() {
 }
 
 /**
- * Outputs an encouraging message
- * @returns {string}
- */
-function handleHappy() {
-    console.log("I'm glad that you seem happy!");
-    // TODO: ask user what they have been doing that day and store activities
-}
-
-/**
  * Suggests one activity per type of activity
  */
 function showActivities() {
     // TODO: Change category of suggestions based on user history
-    for (var i = 0 ; i < Activities.length; i++){
-        console.log(Activities[i][Math.floor(Math.random() * Activities[i].length)]);
+    responseArray = [];
+    for (var i = 0; i < Activities.length; i++) {
+        responseArray.push(Activities[i][Math.floor(Math.random() * Activities[i].length)]);
     }
+    return responseArray;
 }
 
 /**
@@ -76,7 +85,9 @@ function readFile(fileName) {
         var data = fs.readFileSync(fileName, 'utf8');
         var array = data.toString().split("\n");
         return array;
-    } catch(e) {
+    } catch (e) {
         console.log('Error:', e.stack);
     }
 }
+
+module.exports = SentimentResponse;
