@@ -11,6 +11,7 @@ class NLP {
 			type: 'PLAIN_TEXT',
 		};
 	}
+
 	Sentiment() {
 		this.client
 			.analyzeSentiment({ document: this.document })

@@ -1,4 +1,7 @@
 
+var fs = require('fs');
+var us = require('./user');
+
 var physicalFile = "data/physical.txt";
 var emotionalFile = "data/emotional.txt";
 var socialFile = "data/social.txt";
@@ -9,12 +12,16 @@ Activities = [];
 
 class SentimentResponse {
 
+    /**
+     * Creates a new SentimentResponse that
+     * @param analysis
+     */
     constructor(analysis) {
         setUp();
-        this.response = handleSentiment(analysis);
+        this.handleSentiment(analysis);
     }
+<<<<<<< HEAD
 }
-
 /**
  * Handles a given array containing a sentiment score and magnitude, choosing
  * @param numArray where the 0th element is the magnitude and the 1st element is the score
@@ -25,23 +32,58 @@ function handleSentiment(numArray) {
     if (score < -.5 && magnitude >= 1) return handleSad();
     else return handleHappy();
 }
+=======
 
-/**
- * Outputs an encouraging message
- * @returns {string}
- */
-function handleHappy() {
-    return{text: "I'm glad that you seem happy!"};
-    // TODO: ask user what they have been doing that day and store activities
-}
+    /**
+     * Handles a given array containing a sentiment score and magnitude, choosing
+     * @param numArray {{score, tone_id, tone_name},{score, tone_id, tone_name},....} OR {magnitude, score}
+     */
+    handleSentiment(numArray) {
+        var magnitude = numArray[0];
+        var score = numArray[1];
+        if (score < -.5 && magnitude >= 1) this.handleSad();
+        else this.handleHappy();
+    }
+>>>>>>> f71dc9a0c22cc8d651550c6443403dc0280d3722
 
-/**
- * Outputs a sympathetic message and suggests possible activities to feel better
- */
-function handleSad() {
-    responseArray = showActivities();
-    return {text: "I'm sorry that you aren't feeling so great. Maybe try:",
-        activities: responseArray};
+    /**
+     * Handles the case where the user is happy and returns encouraging text
+     */
+    handleHappy() {
+        this.isSad = false;
+        this.text = "I'm glad that you seem happy!";
+        this.suggestions = null;
+
+        // TODO: ask user what they have been doing that day and store activities
+    }
+
+    /**
+     * Handles the case where the user's emotions are not entirely clear
+     */
+    handleMixed() {
+        // TODO: pass back to UI and listen again
+    }
+
+    /**
+    * returns a sympathetic message and a list of three possible activities that would improve mood
+    */
+    handleSad() {
+        this.isSad = true;
+        this.text = "I'm sorry that you aren't feeling so great. Maybe try:";
+        this.getActivities();
+    };
+
+    /**
+     * Suggests one activity per type of activity
+     */
+    getActivities() {
+        // TODO: Change category of suggestions based on user history
+        var responseArray = [];
+        for (var i = 0; i < Activities.length; i++) {
+            responseArray.push(Activities[i][Math.floor(Math.random() * Activities[i].length)]);
+        }
+        this.suggestions = responseArray;
+    }
 }
 
 /**
@@ -54,33 +96,11 @@ function setUp() {
 }
 
 /**
- * Handles the case where the user's emotions are not entirely clear
- */
-function handleMixed() {
-    // TODO: pass back to UI and listen again
-    console.log("");
-}
-
-/**
- * Suggests one activity per type of activity
- */
-function showActivities() {
-    // TODO: Change category of suggestions based on user history
-    responseArray = [];
-    for (var i = 0; i < Activities.length; i++) {
-        responseArray.push(Activities[i][Math.floor(Math.random() * Activities[i].length)]);
-    }
-    return responseArray;
-}
-
-/**
  * Given a file path, reads in the file and returns an array where each line of the text file is an array entry
  * @param fileName is the path of the desired file
  * @returns {string[]} is the list suggestions of the current suggestion type
  */
 function readFile(fileName) {
-    var fs = require('fs');
-
     try {
         var data = fs.readFileSync(fileName, 'utf8');
         var array = data.toString().split("\n");
