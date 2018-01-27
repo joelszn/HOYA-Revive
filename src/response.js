@@ -20,19 +20,6 @@ class SentimentResponse {
         setUp();
         this.handleSentiment(analysis);
     }
-<<<<<<< HEAD
-}
-/**
- * Handles a given array containing a sentiment score and magnitude, choosing
- * @param numArray where the 0th element is the magnitude and the 1st element is the score
- */
-function handleSentiment(numArray) {
-    magnitude = numArray[0];
-    score = numArray[1];
-    if (score < -.5 && magnitude >= 1) return handleSad();
-    else return handleHappy();
-}
-=======
 
     /**
      * Handles a given array containing a sentiment score and magnitude, choosing
@@ -44,7 +31,6 @@ function handleSentiment(numArray) {
         if (score < -.5 && magnitude >= 1) this.handleSad();
         else this.handleHappy();
     }
->>>>>>> f71dc9a0c22cc8d651550c6443403dc0280d3722
 
     /**
      * Handles the case where the user is happy and returns encouraging text
