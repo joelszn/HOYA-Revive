@@ -27,17 +27,17 @@ require('./config/express')(app);
 
 // Create the service wrapper
 var toneAnalyzer = new ToneAnalyzerV3({
-  // If unspecified here, the TONE_ANALYZER_USERNAME and TONE_ANALYZER_PASSWORD environment properties will be checked
-  // After that, the SDK will fall back to the bluemix-provided VCAP_SERVICES environment property
-  // username: '<username>',
-  // password: '<password>',
-  version_date: '2017-09-21'
+  version_date: '2018-01-27'
 });
-
+app.set('title', 'Revive');
 app.get('/', function(req, res) {
   res.render('index', {
     bluemixAnalytics: !!process.env.BLUEMIX_ANALYTICS,
   });
+});
+
+app.get('/graph', function(req, res) {
+  res.render('graph');
 });
 
 app.post('/api/tone', function(req, res, next) {

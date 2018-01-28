@@ -1,9 +1,12 @@
 'use strict';
-/*
- * JQuery on ready callback function
- */
+
+let state = {
+  emotional: '', 
+  physical: '',
+  social: ''
+}
+
 function ready() {
-  // CSRF protection
   $.ajaxSetup({
     headers: {
       'csrf-token': $('meta[name="ct"]').attr('content')
@@ -23,8 +26,49 @@ function ready() {
         'social': social[0],
         'own-text': ''
       };
+      state.emotional = sentimentActivity.emotional.toString().split('\n');
+      state.physical = sentimentActivity.physical.toString().split('\n');
+      state.social = sentimentActivity.social.toString().split('\n');
       allReady(thresholds[0], sentimentActivity);
     });
+  }
+
+console.log(state.emotional);
+class SentimentResponse {
+  constructor() {
+    this.response = this.suggestion = '';
+  }
+  handleSentiment(sentimentScore, sentimentVoiceTone) {
+    switch (sentimentVoiceTone) {
+      case 'sadness':
+        this.response = `I hope you feel OK soon. Here are some activities that will make you feel better`;
+        this.suggestion = this.RandomActivity(state.physical);
+        console.log(this.response, this.suggestion);
+        break;
+      case 'joy':
+        this.response = `I am happy when you are`;
+        this.suggestion = this.RandomActivity(state.social);
+        console.log(this.response, this.suggestion);
+        break;
+      case 'anger':
+        this.response = `Hey, being angry doesn't solve problems. But I know something which can cheer you up`;
+        this.suggestion = this.RandomActivity(state.emotional);
+        console.log(this.response, this.suggestion);
+        break;
+      default:
+        if (sentimentScore > 0.85) {
+          this.response = `I am sorry that you are going through this. Take some deep breaths. Everything will be okay.`
+        }
+        this.response = `I'm freaking tired of this BS`;
+        this.suggestion = this.RandomActivity(state.physical);
+        console.log(this.response, this.suggestion);
+        break;
+    }
+  }
+  RandomActivity(arr) {
+    let randIndex = Math.floor(Math.random() * (arr.length + 1));
+    return arr[randIndex];
+  }
 }
 
 /**
@@ -38,30 +82,17 @@ function allReady(thresholds, sentimentActivity) {
     $jsonCode = $('.json--code'),
     $output = $('.output'),
     $error = $('.error'),
-    $errorMessage = $('.error--message'),
     $textarea = $('.input--textarea'),
     $submitButton = $('.input--submit-button'),
     selectedLang = 'en',
     lastSentenceID;
-  /**
-   * 
-   * @param {Object} data Data file to store
-   */
-  function storeSentimentData(data) {
 
-  }
   /**
    * Callback function for AJAX post to get tone analyzer data
    * @param {Object} data response data from api
    * @return {undefined}
    */
   function toneCallback(data) {
-    console.log($jsonCode.value);
-    $jsonCode.value;
-    // JULIA'S FUNCTION GOES HERE
-
-
-    ////
     $input.show();
     $error.hide();
     $output.hide();
@@ -70,7 +101,17 @@ function allReady(thresholds, sentimentActivity) {
       selectedSampleText = $textarea.val(),
       sentences, sentenceTone = [],
       app;
-    console.log(emotionTone);
+
+    let sentimentData = JSON.parse(JSON.stringify(emotionTone));
+    let sentimentHandler = new SentimentResponse();
+
+    if (sentimentData.length > 0) {
+      sentimentHandler.handleSentiment(sentimentData[0].score, sentimentData[0].tone_id);
+      console.log(`${sentimentData[0].tone_id}, ${sentimentData[0].score}`);
+    } else {
+      console.log(`Sorry. I do not understand`)
+    }
+
     // if only one sentence, sentences will not exist, so mutate sentences_tone manually
     if (typeof (data.sentences_tone) === 'undefined' || data.sentences_tone === null) {
       sentences = [{
@@ -148,13 +189,6 @@ function allReady(thresholds, sentimentActivity) {
       message = 'You\'ve sent a lot of requests in a short amount of time. ' +
         'As the CPU cores cool off a bit, wait a few seonds before sending more requests.';
     }
-
-    $errorMessage.html(_.template(errorMessage_template, {
-      items: [{
-        errorCode: error.responseJSON.code,
-        errorMessage: message
-      }]
-    }));
 
     $input.show();
     $output.hide();
