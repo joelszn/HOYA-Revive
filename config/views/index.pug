@@ -31,7 +31,7 @@ html
     p#nlp-response.card Hey... How are you feeling today?
     textarea.intro-text.base--textarea.input--textarea(style='background-color: transparent; border: none;', rows='2', placehoder="Hey... How was your day?")
     button.intro-text.base--button.input--submit-button(type='submit' style='border: none;') Revive!
- 
+    
     script(src='vendor/bootstrap/js/bootstrap.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
@@ -43,48 +43,52 @@ html
     script(type='text/javascript', src='js/demo.js')
     script(type='text/javascript').
       $(document).ready(function() {
-      $('input[name="document-level"]').prop('checked', false);
-      $('input[name="sentence-level"]').prop('checked', false);
-      $(".input--submit-button, .output--reset-button").click(function() {
-      $('input[name="document-level"]').prop('checked', false);
-      $('input[name="sentence-level"]').prop('checked', false);
-      });
-      $("input[name='document-level']").click(function() {
-      setTimeout(function() {
-      $('.dcl').hide(0).delay(2000).show(0);
-      $('.document-level-thankyou').show(0).delay(2000).hide(0);
-      }, 100);
-      });
-      $("input[name='sentence-level']").click(function() {
-      setTimeout(function() {
-      $('.scl').hide(0).delay(2000).show(0);
-      $('.sentence-level-thankyou').show(0).delay(2000).hide(0);
-      }, 100);
-      });
-      var first_char = /\\S/;
-      var SpeechAnalysis = function () {
-      var recognition = new webkitSpeechRecognition();
-      var transcript = final_transcript = '';
-      var text = document.querySelector('.input--textarea');
-      recognition.continuous = true;
-      recognition.interimResults = true;
-      recognition.onresult = function(event) {
-      var interim_transcript = '';
-      if (typeof(event.results) == 'undefined') {
-        recognition.onend = null;
-        recognition.stop();
-        return;
-      }
-      for (var i = event.resultIndex; i < event.results.length; ++i) {
-        if (event.results[i].isFinal) {
-          final_transcript += event.results[i][0].transcript;
-        } else {
-        interim_transcript += event.results[i][0].transcript;
+        $('.input--textarea').hide();
+        $('#voice-input').click(function(){
+          $('.input--textarea').show();
+        })
+        $('input[name="document-level"]').prop('checked', false);
+        $('input[name="sentence-level"]').prop('checked', false);
+        $(".input--submit-button, .output--reset-button").click(function() {
+          $('input[name="document-level"]').prop('checked', false);
+          $('input[name="sentence-level"]').prop('checked', false);
+        });
+        $("input[name='document-level']").click(function() {
+          setTimeout(function() {
+            $('.dcl').hide(0).delay(2000).show(0);
+            $('.document-level-thankyou').show(0).delay(2000).hide(0);
+          }, 100);
+        });
+        $("input[name='sentence-level']").click(function() {
+          setTimeout(function() {
+            $('.scl').hide(0).delay(2000).show(0);
+            $('.sentence-level-thankyou').show(0).delay(2000).hide(0);
+          }, 100);
+        });
+        var first_char = /\\S/;
+        var SpeechAnalysis = function () {
+        var recognition = new webkitSpeechRecognition();
+        var transcript = final_transcript = '';
+        var text = document.querySelector('.input--textarea');
+        recognition.continuous = true;
+        recognition.interimResults = true;
+        recognition.onresult = function(event) {
+        var interim_transcript = '';
+        if (typeof(event.results) == 'undefined') {
+          recognition.onend = null;
+          recognition.stop();
+          return;
         }
-      }
-        text.value = final_transcript;
-      };
-      recognition.start();
-      }
-      SpeechAnalysis();
+        for (var i = event.resultIndex; i < event.results.length; ++i) {
+          if (event.results[i].isFinal) {
+            final_transcript += event.results[i][0].transcript;
+          } else {
+          interim_transcript += event.results[i][0].transcript;
+          }
+        }
+          text.value = final_transcript;
+        };
+        recognition.start();
+        }
+        SpeechAnalysis();
       });
