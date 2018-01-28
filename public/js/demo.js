@@ -90,7 +90,7 @@ class SentimentResponse {
                   this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
                 }
                 else {
-                  this.response = "You seem a bit anxious. Why don't you: ";
+                  this.response = "You seem a bit anxious. Why don't you try: ";
                   this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
                 }
             default:
