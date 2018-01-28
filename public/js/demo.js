@@ -56,7 +56,7 @@ class SentimentResponse {
 	handleSentiment(sentimentScore, sentimentVoiceTone) {
 		switch (sentimentVoiceTone) {
 			case 'sadness':
-                if (sentimentScore > .9) {
+                if (sentimentScore > .95) {
                     this.response = "I am sorry that you are feeling so bad. If you need to talk to someone, please call 1-800-273-8255."
                 }
                 else if (sentimentScore > .75) {
