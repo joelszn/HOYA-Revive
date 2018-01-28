@@ -43,18 +43,31 @@ class SentimentResponse {
   handleSentiment(sentimentScore, sentimentVoiceTone) {
     switch (sentimentVoiceTone) {
       case 'sadness':
-        this.response = `I hope you feel OK soon. Here are some activities that will make you feel better`;
+        if (sentimentScore > .9) {
+            this.text = 'I am sorry that you are feeling so bad. If you need to talk to someone, please call 1-800-273-8255.';
+        }
+        else if (sentimentScore > .75) {
+            this.text = 'It sounds like you are having a pretty bad day. It might help to try one of these:';
+                }
+        else {
+            this.response = `I'm sorry that you aren't feeling so great. Maybe try: `;
+        }
         this.suggestion = this.RandomActivity(state.physical);
         response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
         break;
       case 'joy':
-        this.response = `I am happy when you are`;
+        this.response = `I am happy when you are!`;
         this.suggestion = this.RandomActivity(state.social);
         //response.nodeValue = `${this.response} ${this.suggestion}`;
         response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
         break;
       case 'anger':
-        this.response = `Hey, being angry doesn't solve problems. But I know something which can cheer you up`;
+          if (score > .75) {
+              this.text = "It seems like something has really affected you. Why don't you blow some steam off by: "
+          }
+          else {
+              this.response = `Hey, being angry doesn't solve problems. But I know something which can cheer you up`;
+          }
         this.suggestion = this.RandomActivity(state.emotional);
         //response.nodeValue = `${this.response} ${this.suggestion}`;
         response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
