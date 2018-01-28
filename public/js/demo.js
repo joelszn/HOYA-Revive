@@ -153,7 +153,7 @@ function allReady(thresholds, sentimentActivity) {
 			sentimentHandler.handleSentiment(sentimentData[0].score, sentimentData[0].tone_id);
 			console.log(`${sentimentData[0].tone_id}, ${sentimentData[0].score}`);
 		} else {
-			console.log(`Sorry. I do not understand`)
+			sentimentHandler.UpdateResponse(`Sorry. I do not understand`)
 		}
 
 		// if only one sentence, sentences will not exist, so mutate sentences_tone manually
