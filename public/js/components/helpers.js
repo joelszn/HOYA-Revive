@@ -53,10 +53,6 @@ function normalize(str) {
  * @param {$element} $element The element
  * @return {undefined}
  */
-function scrollTo($element) {
-  $('html, body').animate({ scrollTop: $element.offset().top }, 'fast');
-}
-
 /**
  * Move element in @param arr from @param oldIndex to @param newIndex.
  * @param {Array} arr the array
