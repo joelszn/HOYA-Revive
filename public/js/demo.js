@@ -85,7 +85,7 @@ class SentimentResponse {
 				this.UpdateResponse(this.response, this.suggestion);
 				break;
             case 'fear':
-                if (sentimentScore > .85) {
+                if (sentimentScore > .75) {
                   this.response = "I am sorry that you are going through this. Take some deep breaths. Everything will be okay. Maybe try: ";
                   this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
                 }
@@ -93,18 +93,24 @@ class SentimentResponse {
                   this.response = "You seem a bit anxious. Why don't you try: ";
                   this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
                 }
+                this.UpdateResponse(this.response, this.suggestion);
+                break;
             default:
 				this.response = `I hope you are having a good day!`;
+				this.suggestion = null;
 				this.UpdateResponse(this.response, this.suggestion);
 				break;
 		}
 	}
 	RandomActivity(arr) {
-		let randIndex = Math.floor(Math.random() * (arr.length + 1));
+		let randIndex = Math.floor(Math.random() * (arr.length));
 		return arr[randIndex];
 	}
 	UpdateResponse(res, sug){
-		return this.nlpResponse.innerText = `${res} ${sug}`;
+	  if (sug != null){
+          return this.nlpResponse.innerText = `${res} ${sug}`;
+      }
+		return this.nlpResponse.innerText = `${res}`;
 	}
 }
 
