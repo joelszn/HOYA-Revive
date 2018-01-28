@@ -6,6 +6,8 @@ let state = {
   social: ''
 }
 
+let response = document.getElementById('response');
+
 function ready() {
   $.ajaxSetup({
     headers: {
@@ -43,17 +45,19 @@ class SentimentResponse {
       case 'sadness':
         this.response = `I hope you feel OK soon. Here are some activities that will make you feel better`;
         this.suggestion = this.RandomActivity(state.physical);
-        console.log(this.response, this.suggestion);
+        response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
         break;
       case 'joy':
         this.response = `I am happy when you are`;
         this.suggestion = this.RandomActivity(state.social);
-        console.log(this.response, this.suggestion);
+        //response.nodeValue = `${this.response} ${this.suggestion}`;
+        response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
         break;
       case 'anger':
         this.response = `Hey, being angry doesn't solve problems. But I know something which can cheer you up`;
         this.suggestion = this.RandomActivity(state.emotional);
-        console.log(this.response, this.suggestion);
+        //response.nodeValue = `${this.response} ${this.suggestion}`;
+        response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
         break;
       default:
         if (sentimentScore > 0.85) {
@@ -61,7 +65,8 @@ class SentimentResponse {
         }
         this.response = `I'm freaking tired of this BS`;
         this.suggestion = this.RandomActivity(state.physical);
-        console.log(this.response, this.suggestion);
+        //response.nodeValue = `${this.response} ${this.suggestion}`;
+        response.nodeValue = document.write(`${this.response} ${this.suggestion}`);
         break;
     }
   }
