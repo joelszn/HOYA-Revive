@@ -6,6 +6,8 @@ let state = {
 	social: ''
 }
 
+let response = document.getElementById('response');
+
 function ready() {
 	$.ajaxSetup({
 		headers: {
