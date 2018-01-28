@@ -1,84 +1,39 @@
 doctype html
-html(lang='en')
+html
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    meta(name='description', content='')
-    meta(name='author', content='')
-    title Revive - Team 34
-    // Bootstrap Core CSS
-    link(href='vendor/bootstrap/css/bootstrap.min.css', rel='stylesheet')
-    // Custom Fonts
-    link(href='vendor/font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
-    // Theme CSS
-    link(href='css/grayscale.css', rel='stylesheet')
-    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
-    // WARNING: Respond.js doesn't work if you view the page via file://
-    //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
-    // jQuery
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title Revive
+    link(rel='stylesheet', type='text/css', href='css/inline.css')
+    link(rel='manifest', href='/manifest.json')
+    meta(name='apple-mobile-web-app-capable', content='yes')
+    meta(name='apple-mobile-web-app-status-bar-style', content='black')
+    meta(name='apple-mobile-web-app-title', content='Revive')
+    link(rel='apple-touch-icon', href='appIcon/152.png')
+    meta(name='msapplication-TileImage', content='appIcon/144.png')
+    meta(name='msapplication-TileColor', content='#2F3BA2')
+  body#nlp-base
+    header.header
+      h1.header__title Revive
+      button#butRefresh.headerButton(aria-label='Refresh')
+      button#butAdd.headerButton(aria-label='Add')
+    main.main
+      button#voice-input
+        svg(xmlns='http://www.w3.org/2000/svg', width='24', height='24', viewbox='0 0 24 24')
+          path(d='M12 14c1.66 0 2.99-1.34 2.99-3L15 5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3zm5.3-3c0 3-2.54 5.1-5.3 5.1S6.7 14 6.7 11H5c0 3.41 2.72 6.23 6 6.72V21h2v-3.28c3.28-.48 6-3.3 6-6.72h-1.7z')
+    .loader
+      svg(viewbox='0 0 32 32', width='32', height='32')
+        circle#spinner(cx='16', cy='16', r='14', fill='none')
     script(src='vendor/jquery/jquery.js')
-    //Hide & Show Fcn
-    script.
-      $(document).ready(function(){
-          $(".input--submit-button").click(function(){
-            if(!$('.input--textarea').value){
-              
-              $("textarea").hide();
-            } 
-              $("textarea").show();
-            
-          });
-      });
-      
-
-  
-  body#page-top(data-spy='scroll', data-target='.navbar-fixed-top')
-    // Navigation
-    nav.navbar.navbar-custom.navbar-fixed-top(role='navigation')
-      .container
-        .navbar-header
-          a.navbar-brand.page-scroll(href='index.html')
-            i.fa.fa-play-circle
-            |  HOYAHACKS
-    // Intro Header
-    header.intro
-      .intro-body
-        .container
-          .row
-            .col-md-8.col-md-offset-2
-              h1.brand-heading Revive
-              p.intro-text
-                | A Free, Responsive, Web App
-                br
-                | Created by Team 34.
-              .panel(style='background-color: transparent;')
-                textarea.intro-text.base--textarea.input--textarea(style='background-color: transparent; border: none;' rows='2')
-                br
-                |  
-                .input--submit-button-container
-                button.intro-text.base--button.input--submit-button(type='submit' style='background-color: transparent; border: none;') Analyze
-                  .error
-                  .error--message
-              button(type='button', style='background-color: transparent; border: none;')
-                // mic icon
-                //svg(style='width:180px;height:180px', viewbox='0 0 24 24')
-                  path(fill='#FFFFFF', d='M12,2A3,3 0 0,1 15,5V11A3,3 0 0,1 12,14A3,3 0 0,1 9,11V5A3,3 0 0,1 12,2M19,11C19,14.53 16.39,17.44 13,17.93V21H11V17.93C7.61,17.44 5,14.53 5,11H7A5,5 0 0,0 12,16A5,5 0 0,0 17,11H19Z')
-          //button(type='button', style='background-color: transparent; border: none;')
-          p#nlp-response
-    // Footer
-    footer
-      .container.text-center
-        p Copyright © Revive 2018
-  
-    // Bootstrap Core JavaScript
+    .error
+    .error--message
+    p#nlp-response.card
+    textarea.intro-text.base--textarea.input--textarea(style='background-color: transparent; border: none;', rows='2', placehoder="Hey... How was your day?")
+    button.intro-text.base--button.input--submit-button(type='submit' style='border: none;') Revive!
+ 
     script(src='vendor/bootstrap/js/bootstrap.min.js')
-    // Plugin JavaScript
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js')
-    // Theme JavaScript
-    script(src='js/grayscale.min.js')
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
     script(type='text/javascript', src='https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js')
     script(type='text/javascript', src='js/vendors/prism.js')

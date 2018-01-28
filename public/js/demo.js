@@ -100,6 +100,7 @@ function allReady(thresholds, sentimentActivity) {
 		$error = $('.error'),
 		$textarea = $('.input--textarea'),
 		$submitButton = $('.input--submit-button'),
+		$loader = $('.loader'),
 		selectedLang = 'en',
 		lastSentenceID;
 
@@ -231,18 +232,6 @@ function allReady(thresholds, sentimentActivity) {
 	function updateTextarea(value) {
 		$textarea.val(sentimentActivity[value]);
 	}
-
-	/**
-	 * Reset views to beginning state
-	 * @return {undefined}
-	 */
-	function reset() {
-		$input.show();
-		$output.hide();
-		$error.hide();
-		$('#input-tweets').trigger('click');
-	}
-
 	/**
 	 * Submit button click event
 	 */
@@ -254,6 +243,7 @@ function allReady(thresholds, sentimentActivity) {
 		getToneAnalysis($textarea.val());
 	});
 	updateTextarea($('.input--radio:checked').val());
+	$loader.hide();
 }
 
 $(document).ready(ready);
