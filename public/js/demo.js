@@ -56,26 +56,45 @@ class SentimentResponse {
 	handleSentiment(sentimentScore, sentimentVoiceTone) {
 		switch (sentimentVoiceTone) {
 			case 'sadness':
-				this.response = `I hope you feel OK soon. Here are some activities that will make you feel better`;
-				this.suggestion = this.RandomActivity(state.physical);
+                if (sentimentScore > .9) {
+                    this.response = "I am sorry that you are feeling so bad. If you need to talk to someone, please call 1-800-273-8255."
+                }
+                else if (sentimentScore > .75) {
+                    this.response = "It sounds like you are having a pretty bad day. It might help to try one of these: "
+                    this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
+                }
+                else {
+                    this.response = "I'm sorry that you aren't feeling so great. Maybe try: ";
+                    this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
+                }
 				this.UpdateResponse(this.response, this.suggestion);
 				break;
 			case 'joy':
-				this.response = `I am happy when you are`;
-				this.suggestion = this.RandomActivity(state.social);
+				this.response = `I'm glad that you seem happy!`;
 				this.UpdateResponse(this.response, this.suggestion);
 				break;
 			case 'anger':
-				this.response = `Hey, being angry doesn't solve problems. But I know something which can cheer you up`;
-				this.suggestion = this.RandomActivity(state.emotional);
+                if (sentimentScore > .75) {
+                    this.response = "It seems like something has really affected you. Why don't you blow some steam off by: "
+                    this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
+                }
+                else {
+                    this.response = "You seem a bit irritated. You might want to calm down by:"
+                    this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
+                }
 				this.UpdateResponse(this.response, this.suggestion);
 				break;
-			default:
-				if (sentimentScore > 0.85) {
-					this.response = `I am sorry that you are going through this. Take some deep breaths. Everything will be okay.`
-				}
-				this.response = `I'm freaking tired of this BS`;
-				this.suggestion = this.RandomActivity(state.physical);
+            case 'fear':
+                if (sentimentScore > .85) {
+                  this.response = "I am sorry that you are going through this. Take some deep breaths. Everything will be okay. Maybe try: ";
+                  this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
+                }
+                else {
+                  this.response = "You seem a bit anxious. Why don't you: ";
+                  this.suggestion = this.RandomActivity(state.physical) + ", " + this.RandomActivity(state.emotional) + ", or "+ this.RandomActivity(state.social) + ".";
+                }
+            default:
+				this.response = `I hope you are having a good day!`;
 				this.UpdateResponse(this.response, this.suggestion);
 				break;
 		}
@@ -123,8 +142,12 @@ function allReady(thresholds, sentimentActivity) {
 
 		let sentimentData = JSON.parse(JSON.stringify(emotionTone));
 
-		StoreSentimentData(sentimentData[0].score);
-		let sentimentHandler = new SentimentResponse();
+		if (sentimentData[0] != null)
+        {
+            StoreSentimentData(sentimentData[0].score);
+        }
+
+        let sentimentHandler = new SentimentResponse();
 
 		if (sentimentData.length > 0) {
 			sentimentHandler.handleSentiment(sentimentData[0].score, sentimentData[0].tone_id);
